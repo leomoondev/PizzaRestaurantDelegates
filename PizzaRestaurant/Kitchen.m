@@ -13,25 +13,15 @@
 - (Pizza *)makePizzaWithSize:(PizzaSize)size toppings:(NSArray *)toppings {
 
     Pizza *pizza = [[Pizza alloc] initWithSize:size initWithToppings:toppings];
-    NSString *showPizza = [toppings componentsJoinedByString:@","];
+    
+    if([self.delegate kitchen:self shouldMakePizzaOfSize:size andToppings:toppings]) {
+        if([self.delegate kitchenShouldUpgradeOrder:self]) {
+            size = large;
+        }
 
-    switch(size) {
-        case small:
-            NSLog(@"This is small pizza with %@\n", showPizza);
-            break;
-        case medium:
-            NSLog(@"This is medium pizza with %@\n", showPizza);
-            break;
-        case large:
-            NSLog(@"This is large pizza with %@\n", showPizza);
-            break;
-        case extraLarge:
-            NSLog(@"This is extra large pizza with %@\n", showPizza);
-            break;
-        default:
-            NSLog(@"You've entered invalid size. Please try again!\n");
+        return pizza;
     }
-    return pizza;
+    return 0;
 }
 
 @end
